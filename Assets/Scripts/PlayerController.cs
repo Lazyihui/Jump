@@ -75,5 +75,11 @@ public class PlayerController : MonoBehaviour
                 GameManager.S.HitGround(transform.position);
             }
         }
+        else if (collision.gameObject.name != "StartCube")
+        {
+            GameManager.S.GameOver();
+        }
+
+
     }
 }

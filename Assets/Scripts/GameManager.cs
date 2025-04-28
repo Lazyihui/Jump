@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 
@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
 
 	void GenerateNewCube()
 	{
-		float dist = Random.Range(3, 10) *1.5f;
+		float dist = Random.Range(3, 10) * 1.5f;
 		Vector3 dir = PlayerIsFacingXAxis ? -Vector3.right : Vector3.forward;
 		// Quaternion.identity 不旋转的意思
 		GameObject cube = Instantiate(cubePrefab, currentCube.position + dir * dist, Quaternion.identity);
@@ -40,5 +40,18 @@ public class GameManager : MonoBehaviour
 	{
 		PlayerIsFacingXAxis = !PlayerIsFacingXAxis;
 		GenerateNewCube();
+	}
+
+	public void GameOver()
+	{
+		// 延长1秒运行
+		Invoke("ReloadScene", 1);
+	}
+
+	public void ReloadScene()
+	{
+		// using UnityEngine.SceneManagement; 加载当前关卡 d
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
 	}
 }
