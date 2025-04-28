@@ -1,6 +1,4 @@
-﻿using System;
-using System.Security.Policy;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -47,20 +45,35 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (doJump)
+        if (doJump && isGround)
         {
             Jump();
             doJump = false;
             isGround = false;
             timer = 0;
         }
+
+        rb.AddForce(Vector3.down * 50); // 添加重力
     }
     void Jump()
     {
-        Vector3 dir = GameManager.S.PlayerIsFacingXAxis ? Vector3.right : Vector3.forward;
+        Vector3 dir = GameManager.S.PlayerIsFacingXAxis ? -Vector3.right : Vector3.forward;
         dir.y = 1;
         dir = dir.normalized; // 归一化确保力度一致
         rb.velocity = dir * jumpPower * timer;
         Debug.Log("Jump Power: " + (dir * jumpPower * timer));
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            // 判断是否与地面接触 第一个接触点的法线方向
+            if (collision.contacts[0].normal == Vector3.up)
+            {
+                isGround = true;
+                GameManager.S.HitGround(transform.position);
+            }
+        }
     }
 }

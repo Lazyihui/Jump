@@ -1,34 +1,44 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
 
-	// public GameManager gameManager;
-
-	// void Awake()
-	// {
-	// 	// Awake 比 Start 先执行
-	// 	gameManager = this;
-	// }
-
 	public static GameManager S;
 
+	public GameObject cubePrefab;
+
+	public GameObject startCube;
+	Transform currentCube;
+
+	public bool PlayerIsFacingXAxis;
+
+
+	// awake 比 Start更早运行
 	void Awake()
 	{
 		S = this;
 	}
 
-	public bool PlayerIsFacingXAxis;
 	void Start()
 	{
-
+		currentCube = startCube.transform;
+		GenerateNewCube();
 	}
 
-	// Update is called once per frame
-	void Update()
+	void GenerateNewCube()
 	{
+		float dist = Random.Range(3, 10) *1.5f;
+		Vector3 dir = PlayerIsFacingXAxis ? -Vector3.right : Vector3.forward;
+		// Quaternion.identity 不旋转的意思
+		GameObject cube = Instantiate(cubePrefab, currentCube.position + dir * dist, Quaternion.identity);
+		cube.transform.parent = transform;
 
+		currentCube = cube.transform;
+	}
+
+	public void HitGround(Vector3 hitPos)
+	{
+		PlayerIsFacingXAxis = !PlayerIsFacingXAxis;
+		GenerateNewCube();
 	}
 }
