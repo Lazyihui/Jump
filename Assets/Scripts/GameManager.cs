@@ -4,6 +4,11 @@ public class GameManager : MonoBehaviour
 {
 
 	public static GameManager S;
+	// awake 比 Start更早运行
+	void Awake()
+	{
+		S = this;
+	}
 
 	public GameObject cubePrefab;
 
@@ -12,12 +17,7 @@ public class GameManager : MonoBehaviour
 
 	public bool PlayerIsFacingXAxis;
 
-
-	// awake 比 Start更早运行
-	void Awake()
-	{
-		S = this;
-	}
+	int score;
 
 	void Start()
 	{
@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviour
 	{
 		PlayerIsFacingXAxis = !PlayerIsFacingXAxis;
 		GenerateNewCube();
+		score++;
+		UIManager.S.RefreshScore(score);
 	}
 
 	public void GameOver()
