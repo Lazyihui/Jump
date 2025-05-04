@@ -20,7 +20,6 @@ public class PlayerController : MonoBehaviour
     bool isFalling = false;
 
     Vector3 originalScale;
-    Vector3 compressedScale;
 
     void Start()
     {
@@ -28,7 +27,6 @@ public class PlayerController : MonoBehaviour
         rb.mass = 1;
         rb.drag = 0;
         originalScale = transform.localScale;
-        compressedScale = new Vector3(originalScale.x, originalScale.y * 0.5f, originalScale.z);
     }
 
     void Update()
